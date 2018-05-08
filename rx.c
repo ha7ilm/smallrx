@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <complex.h>
 #include <limits.h>
@@ -16,10 +17,11 @@ int main(int argc, char *argv[])
     float dshift = ((atoi(argv[2])-atoi(argv[1]))/samp_rate)*2*M_PI, shift = 0;
     fprintf(stderr, "dshift = %f, decimate_taps_length = %d\n", dshift, decimate_taps_length);
     complex float* decimate_taps = malloc(sizeof(complex float)*decimate_taps_length);
+    complex float* decimate_buffer = calloc(sizeof(complex float),decimate_taps_length);
     int decimate_taps_middle=decimate_taps_length/2;
     const int output_rate = 48000;
     const float decimate_factor = samp_rate / output_rate;
-    const float complex decimate_dshift = (mod=='u'?1:-1) * ((ssb_bw/2)/samp_rate)*2*M_PI;
+    const complex float decimate_dshift = (mod=='u'?1:-1) * ((ssb_bw/2)/samp_rate)*2*M_PI;
     const float decimate_cutoff_rate = (mod=='u'||mod=='l') ? (ssb_bw/2)/samp_rate  : .5 / decimate_factor;
     decimate_taps[decimate_taps_middle]=2*M_PI*decimate_cutoff_rate*hamming(0);
     for(int i=1; i<=decimate_taps_middle; i++) 
@@ -37,6 +39,7 @@ int main(int argc, char *argv[])
     fprintf(filterfile, "freqz([");
     for(int i=0; i<decimate_taps_length; i++) fprintf(filterfile, " %f+(%f*i)\n", creal(decimate_taps[i]), cimag(decimate_taps[i]));
     fprintf(filterfile, "]);input(\"\");");
+    int decimate_counter = 0;
     while(1) {
         //load input
         complex float a = CMPLX(((float)getchar())/(UCHAR_MAX/2.0)-1.0, ((float)getchar())/(UCHAR_MAX/2.0)-1.0);
@@ -45,14 +48,20 @@ int main(int argc, char *argv[])
         while(shift>2*M_PI) shift-=2*M_PI;
         a *= sinf(shift) + cosf(shift) * I;
         //decimate
+        memmove(decimate_buffer+1, decimate_buffer, decimate_taps_length*sizeof(complex float));
+        decimate_buffer[0] = a;
+        if(decimate_counter++ >= decimate_factor) {
+            decimate_counter = 0;
+            complex float d = CMPLX(0,0);
+            for(int i=0; i<=decimate_taps_length; i++) { d += decimate_buffer[i] * decimate_taps[i]; }
+            //fmdemod
+            //amdemod
+            //output
+            float i = creal(d), q = cimag(d);
+            fwrite(&i, sizeof(float), 1, stdout);
+            fwrite(&q, sizeof(float), 1, stdout);
+            if(feof(stdin)) break;
+        }
          
-         
-        //fmdemod
-        //amdemod
-        //output
-        float i = creal(a), q = cimag(a);
-        fwrite(&i, sizeof(float), 1, stdout);
-        fwrite(&q, sizeof(float), 1, stdout);
-        if(feof(stdin)) break;
     }
 }
