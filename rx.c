@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
     for(int i=0; i<decimate_taps_length; i++) fprintf(filterfile, " %f+(%f*i)\n", creal(decimate_taps[i]), cimag(decimate_taps[i]));
     fprintf(filterfile, "]);input(\"\");");
     int decimate_counter = 0;
+    float last_phi = 0;
     while(1) {
         //load input
         complex float a = CMPLX(((float)getchar())/(UCHAR_MAX/2.0)-1.0, ((float)getchar())/(UCHAR_MAX/2.0)-1.0);
@@ -54,12 +55,23 @@ int main(int argc, char *argv[])
             decimate_counter = 0;
             complex float d = CMPLX(0,0);
             for(int i=0; i<=decimate_taps_length; i++) { d += decimate_buffer[i] * decimate_taps[i]; }
+            short o;
+            const float cmult = 10;
             //fmdemod
+            if(mod=='f') {
+                float phi=catanf(d);
+                float dphi=phi-last_phi;
+                last_phi=phi;
+                if(dphi<-M_PI) dphi+=2*M_PI;
+                if(dphi>M_PI) dphi-=2*M_PI;
+                o=((SHRT_MAX-1)/M_PI)*dphi;
+            }
             //amdemod
+            else if(mod=='a') o = cabsf(d);
+            //ssbdemod
+            else o = crealf(d);
             //output
-            float i = creal(d), q = cimag(d);
-            fwrite(&i, sizeof(float), 1, stdout);
-            fwrite(&q, sizeof(float), 1, stdout);
+            fwrite(&o, sizeof(short), 1, stdout);
             if(feof(stdin)) break;
         }
          
