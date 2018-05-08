@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     //constraints: you should run it like: rx <center> <rx_freq> <l[sb]|u[sb]|a[m]|f[m]>
     if(argc<4) return 1;
     char mod = argv[3][0];
-    const float samp_rate = 240000, decimate_transition_bw = 100, ssb_bw = 3000;
+    const float samp_rate = 240000, decimate_transition_bw = 500, ssb_bw = 3000, amfm_bw = 12000;
     const int decimate_taps_length = (int)(4.0/(decimate_transition_bw/samp_rate)) | 1;
     float dshift = ((atoi(argv[2])-atoi(argv[1]))/samp_rate)*2*M_PI, shift = 0;
     fprintf(stderr, "dshift = %f, decimate_taps_length = %d\n", dshift, decimate_taps_length);
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     const int output_rate = 48000;
     const float decimate_factor = samp_rate / output_rate;
     const complex float decimate_dshift = (mod=='u'?1:-1) * ((ssb_bw/2)/samp_rate)*2*M_PI;
-    const float decimate_cutoff_rate = (mod=='u'||mod=='l') ? (ssb_bw/2)/samp_rate  : .5 / decimate_factor;
+    const float decimate_cutoff_rate = (mod=='u'||mod=='l') ? (ssb_bw/2)/samp_rate  : (amfm_bw/2)/samp_rate;
     decimate_taps[decimate_taps_middle]=2*M_PI*decimate_cutoff_rate*hamming(0);
     for(int i=1; i<=decimate_taps_middle; i++) 
         decimate_taps[decimate_taps_middle-i] = decimate_taps[decimate_taps_middle+i]=(sin(2*M_PI*decimate_cutoff_rate*i)/i) * 
