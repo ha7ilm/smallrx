@@ -1,3 +1,5 @@
 rx: rx.c
-	gcc rx.c -lm -orx
+	gcc -O3 rx.c -lm -orx
+clean:
+	rm rx
 

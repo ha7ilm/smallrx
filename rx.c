@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     //constraints: you should run it like: rx <center> <rx_freq> <l[sb]|u[sb]|a[m]|f[m]>
     if(argc<4) return 1;
     char mod = argv[3][0];
-    const float samp_rate = 240000, decimate_transition_bw = 500, ssb_bw = 3000, amfm_bw = 12000;
+    const float samp_rate = 240000, decimate_transition_bw = 800, ssb_bw = 3000, amfm_bw = 12000;
     const int decimate_taps_length = (int)(4.0/(decimate_transition_bw/samp_rate)) | 1;
     float dshift = ((atoi(argv[2])-atoi(argv[1]))/samp_rate)*2*M_PI, shift = 0;
     fprintf(stderr, "dshift = %f, decimate_taps_length = %d\n", dshift, decimate_taps_length);
@@ -49,22 +49,27 @@ int main(int argc, char *argv[])
         while(shift>2*M_PI) shift-=2*M_PI;
         a *= sinf(shift) + cosf(shift) * I;
         //decimate
-        memmove(decimate_buffer+1, decimate_buffer, decimate_taps_length*sizeof(complex float));
+        memmove(decimate_buffer+1, decimate_buffer, (decimate_taps_length-1)*sizeof(complex float));
         decimate_buffer[0] = a;
         if(decimate_counter++ >= decimate_factor) {
             decimate_counter = 0;
             complex float d = CMPLX(0,0);
             for(int i=0; i<=decimate_taps_length; i++) { d += decimate_buffer[i] * decimate_taps[i]; }
+
+            //fwrite(&d, sizeof(complex float), 1, stdout);
+            //if(feof(stdin)) break;
+            //continue;
+
             short o;
             const float cmult = 10;
             //fmdemod
             if(mod=='f') {
-                float phi=catanf(d);
-                float dphi=phi-last_phi;
-                last_phi=phi;
-                if(dphi<-M_PI) dphi+=2*M_PI;
-                if(dphi>M_PI) dphi-=2*M_PI;
-                o=((SHRT_MAX-1)/M_PI)*dphi;
+                float phi = cargf(d);
+                float dphi = phi-last_phi;
+                last_phi = phi;
+                while(dphi<-M_PI) dphi += 2*M_PI;
+                while(dphi>M_PI) dphi -= 2*M_PI;
+                o = (SHRT_MAX-1)*(dphi/M_PI);
             }
             //amdemod
             else if(mod=='a') o = cabsf(d);
