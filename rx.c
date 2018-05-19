@@ -24,8 +24,8 @@ int main(int argc, char *argv[]) {
     const float decimate_cutoff_rate = (mod=='u'||mod=='l') ? (ssb_bw/2)/samp_rate  : (amfm_bw/2)/samp_rate;
     decimate_taps[decimate_taps_middle]=2*M_PI*decimate_cutoff_rate*hamming(0);
     for(int i=1; i<=decimate_taps_middle; i++) 
-        decimate_taps[decimate_taps_middle-i] = decimate_taps[decimate_taps_middle+i]=(sin(2*M_PI*decimate_cutoff_rate*i)/i) * 
-            hamming((float)i/decimate_taps_middle);
+        decimate_taps[decimate_taps_middle-i] = decimate_taps[decimate_taps_middle+i] =
+            (sin(2*M_PI*decimate_cutoff_rate*i)/i) * hamming((float)i/decimate_taps_middle);
     if(1 && (mod=='u'||mod=='l')) for(int i=0; i<decimate_taps_length; i++) {
         decimate_taps[i] *= (sinf(shift) + cosf(shift) * I);
         shift += decimate_dshift;
@@ -59,7 +59,6 @@ int main(int argc, char *argv[]) {
             //continue;
 
             short o;
-            const float cmult = 10;
             //fmdemod
             if(mod=='f') {
                 float phi = cargf(d);
