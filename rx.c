@@ -7,8 +7,7 @@
 
 float hamming(float x) { return (0.54-0.46*(2*M_PI*(0.5+(x/2)))); }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     //constraints: you should run it like: rx <center> <rx_freq> <l[sb]|u[sb]|a[m]|f[m]>
     if(argc<4) return 1;
     char mod = argv[3][0];
@@ -20,7 +19,7 @@ int main(int argc, char *argv[])
     complex float* decimate_buffer = calloc(sizeof(complex float),decimate_taps_length);
     int decimate_taps_middle=decimate_taps_length/2;
     const int output_rate = 48000;
-    const float decimate_factor = samp_rate / output_rate;
+    const int decimate_factor = samp_rate / output_rate;
     const complex float decimate_dshift = (mod=='u'?1:-1) * ((ssb_bw/2)/samp_rate)*2*M_PI;
     const float decimate_cutoff_rate = (mod=='u'||mod=='l') ? (ssb_bw/2)/samp_rate  : (amfm_bw/2)/samp_rate;
     decimate_taps[decimate_taps_middle]=2*M_PI*decimate_cutoff_rate*hamming(0);
@@ -49,9 +48,8 @@ int main(int argc, char *argv[])
         while(shift>2*M_PI) shift-=2*M_PI;
         a *= sinf(shift) + cosf(shift) * I;
         //decimate
-        memmove(decimate_buffer+1, decimate_buffer, (decimate_taps_length-1)*sizeof(complex float));
-        decimate_buffer[0] = a;
-        if(decimate_counter++ >= decimate_factor) {
+        decimate_buffer[decimate_taps_length-decimate_factor+decimate_counter] = a;
+        if(++decimate_counter >= decimate_factor) {
             decimate_counter = 0;
             complex float d = CMPLX(0,0);
             for(int i=0; i<=decimate_taps_length; i++) { d += decimate_buffer[i] * decimate_taps[i]; }
@@ -78,6 +76,8 @@ int main(int argc, char *argv[])
             //output
             fwrite(&o, sizeof(short), 1, stdout);
             if(feof(stdin)) break;
+            //memmove
+            memmove(decimate_buffer, decimate_buffer+decimate_factor, (decimate_taps_length-decimate_factor)*sizeof(complex float));
         }
          
     }
