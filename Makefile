@@ -1,7 +1,12 @@
-rx: rx.c
-	gcc -O3 rx.c -lm -orx
-clang: rx.c
-	clang -O3 rx.c -lm -orx
-clean:
-	rm rx
+CC=gcc
+CFLAGS=-Wall -Ofast -march=native
+LDFLAGS=-lm
 
+OBJS=rx.o
+TARGET=rx
+
+all: $(OBJS)
+	$(CC) $(OBJS) $(LDFLAGS) -o $(TARGET)
+
+clean:
+	rm -f $(OBJS) $(TARGET)
