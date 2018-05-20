@@ -15,6 +15,8 @@ It can receive AM/NFM/SSB transmissions with an RTL-SDR.
                                             +- [SSB demod] <+
 ```
 
+By default, it requires a 240 ksps complex U8 input signal, and generates a 48 ksps S16 output audio signal.
+
 :hammer: **To build:**
 ```bash
 git clone https://github.com/ha7ilm/smallrx
@@ -24,7 +26,7 @@ make
 
 :hash: **Command line parameters:**
 ```bash
-./rx <center> <rx_freq> <l[sb]|u[sb]|a[m]|f[m]>
+./rx <centeri_frequency_in_hz> <receiver_frequency_in_hz> <l[sb]|u[sb]|a[m]|f[m]>
 ```
 
 :headphones: **To demodulate NFM at 145.325 MHz using an RTL-SDR:**
@@ -42,4 +44,4 @@ hackrf_transfer -s 2400000 -f 893000 -a1 -r- | csdr convert_s8_f | csdr fir_deci
 cat /dev/urandom | ./rx 145300000 145325000 f | csdr through > /dev/null
 ```
 
-
+(Some examples here need [csdr](https://github.com/simonyiszk/csdr) to be installed.)
