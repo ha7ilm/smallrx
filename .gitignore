@@ -2,3 +2,5 @@ octave-workspace
 rx
 .*.swp
 top_block.py
+test.m
+rx.o

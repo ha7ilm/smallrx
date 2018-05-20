@@ -45,7 +45,6 @@ int main(int argc, char *argv[]) { //syntax: rx <center> <rx_freq> <l[sb]|u[sb]|
             complex float d = CMPLX(0,0);
             for(int i=0; i<=decimate_taps_length; i++) d += decimate_buffer[i] * decimate_taps[i];
             short o;
-            const float cmult = 10;
             if(mod=='f') { // <-- fmdemod
                 float phi = cargf(d);
                 float dphi = phi-last_phi;
