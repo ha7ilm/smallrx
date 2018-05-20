@@ -1,6 +1,7 @@
 # smallrx
 
-This is an amateur radio receiver in no more than 64 lines of code.
+This is an amateur radio receiver in no more than 100 lines of code.  
+(Much of the lines are actually comment.)
 
 It does the following:
 
