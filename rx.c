@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
         // we write the shifted input sample at the end of <decimate_buffer>: 
         // 1. we fill the end of <decimate_buffer> with <decimate_taps_length> samples, 
         // 2. we apply the decimating FIR filter once, 
-        // 3. we move the buffer back <decimate_taps_length> samples, and start again.
+        // 3. we shift (here I mean: move) the data in the buffer back <decimate_taps_length> samples, and start again.
         decimate_buffer[decimate_taps_length-decimate_factor+decimate_counter] = input; 
         if(++decimate_counter >= decimate_factor) {
             //we only run this part 1 time out of <decimate_factor> times of getting here:
@@ -101,7 +101,9 @@ int main(int argc, char *argv[]) {
             //we apply the decimating FIR filter, the result of which is <decimated>
             complex float decimated = CMPLX(0,0); 
             for(int i=0; i<=decimate_taps_length; i++) decimated += decimate_buffer[i] * decimate_taps[i];
-            //<decimated> represents only a single channel 
+            //note: <decimated> represents a single channel here.
+            //we shift the items in the buffer back <decimate_taps_length> samples:
+            memmove(decimate_buffer, decimate_buffer+decimate_factor, (decimate_taps_length-decimate_factor)*sizeof(complex float));
 
             // ====== apply demodulator ===
             short demodulator_output;
@@ -127,8 +129,6 @@ int main(int argc, char *argv[]) {
             fwrite(&demodulator_output, sizeof(short), 1, stdout); 
             //we exit the program if the task supplying the input data on stdin is closed:
             if(feof(stdin)) break; 
-            //we move the buffer back <decimate_taps_length> samples:
-            memmove(decimate_buffer, decimate_buffer+decimate_factor, (decimate_taps_length-decimate_factor)*sizeof(complex float));
         }
     }
 }
