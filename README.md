@@ -44,4 +44,7 @@ hackrf_transfer -s 2400000 -f 893000 -a1 -r- | csdr convert_s8_f | csdr fir_deci
 cat /dev/urandom | ./rx 145300000 145325000 f | csdr through > /dev/null
 ```
 
-(Some examples here need [csdr](https://github.com/simonyiszk/csdr) to be installed.)
+:blue_book: **Notes:**
+
+* Some examples here need [csdr](https://github.com/simonyiszk/csdr) to be installed.
+* HG2ECZ has translated this to Rust, which is available here: https://github.com/hg2ecz/smallrx
