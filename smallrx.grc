@@ -140,7 +140,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>30000</value>
+      <value>0</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -289,7 +289,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>freq</key>
@@ -352,7 +352,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(256, 315)</value>
+      <value>(456, 283)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -376,7 +376,7 @@
     </param>
     <param>
       <key>samples_per_second</key>
-      <value>samp_rate</value>
+      <value>samp_rate/10</value>
     </param>
     <param>
       <key>type</key>
@@ -395,7 +395,7 @@
     </param>
     <param>
       <key>center_freq</key>
-      <value>0</value>
+      <value>3000</value>
     </param>
     <param>
       <key>comment</key>
@@ -454,7 +454,7 @@
     </param>
     <param>
       <key>commandline</key>
-      <value>csdr convert_f_u8 | /home/pcfl/smallrx/rx 0 0 f</value>
+      <value>csdr convert_f_u8 | /home/pcfl/smallrx/rx 0 3000 f</value>
     </param>
     <param>
       <key>comment</key>
@@ -1793,7 +1793,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1976,7 +1976,7 @@
     </param>
     <param>
       <key>samp_rate</key>
-      <value>samp_rate/5</value>
+      <value>samp_rate</value>
     </param>
     <param>
       <key>title</key>

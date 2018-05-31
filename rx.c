@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     for(int i=1; i<=decimate_taps_middle; i++)  
         decimate_taps[decimate_taps_middle-i] = decimate_taps[decimate_taps_middle+i] = (sin(2*M_PI*decimate_cutoff_rate*i)/i) * hamming((float)i/decimate_taps_middle);
     //in case of SSB, do this:
-    if(1 && (modulation=='u'||modulation=='l')) for(int i=0; i<decimate_taps_length; i++) { 
+    if(modulation=='u'||modulation=='l') for(int i=0; i<decimate_taps_length; i++) { 
         decimate_taps[i] *= (sinf(shift_phase) + cosf(shift_phase) * I); 
         shift_phase += decimate_dshift;
         while(shift_phase>2*M_PI) shift_phase-=2*M_PI;
