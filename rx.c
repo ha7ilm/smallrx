@@ -18,7 +18,7 @@ const float amfm_bw = 12000;
 //transition bandwidth for decimating FIR filter:note: a lower value bandwidth slow down processing but sharpens the filter.
 const float decimate_transition_bw = 800;
 
-inline float hamming(float x) { return (0.54-0.46*(2*M_PI*(0.5+(x/2)))); } //hamming window function for FIR filter design
+float hamming(float x) { return (0.54-0.46*(2*M_PI*(0.5+(x/2)))); } //hamming window function for FIR filter design
 
 int main(int argc, char *argv[]) { 
     if(argc<4) return 1;
