@@ -48,3 +48,11 @@ cat /dev/urandom | ./rx 145300000 145325000 f | csdr through > /dev/null
 
 * Some examples here need [csdr](https://github.com/simonyiszk/csdr) to be installed.
 * HG2ECZ has translated this to Rust, which is available here: https://github.com/hg2ecz/smallrx
+
+----
+
+## Contributors
+
+- András Retzler, HA7ILM
+- Zsolt Krüpl, HG2ECZ, @hg2ecz
+- Ádám Kiss, HA8KDA, @kissadamfkut
