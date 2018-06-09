@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     //shift_phase: actual LO phase (for shift)
     float shift_phase = 0; 
     //deicmate_taps_length: how many FIR filter taps we need to reach a given transition BW (should be odd, thus the |1)
-    const int decimate_taps_length = (int)(4.0/(decimate_transition_bw/samp_rate)) | 1; 
+    const int decimate_taps_length = (int)(4.0f/(decimate_transition_bw/samp_rate)) | 1; 
     //decimate_taps: FIR filter taps for the decimating FIR filter:
     complex float* decimate_taps = malloc(sizeof(complex float)*decimate_taps_length); 
     //decimate_buffer: the last <decimate_taps_length> pieces of shifted input samples, on which the decimating FIR is applied
