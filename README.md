@@ -7,7 +7,7 @@ It can receive AM/NFM/SSB transmissions with an RTL-SDR.
 
 :tv: **Presentation:**
 
-For more insight, you can [watch the talk](https://www.youtube.com/watch?v=-QERqK1XAy0) I gave on this project at SDR-2018.
+For more insight, you can [watch the talk](https://www.youtube.com/watch?v=-QERqK1XAy0) I gave on this project at SDRA-2018.
 
 :capital_abcd: **The block diagram of its internals:**
 
