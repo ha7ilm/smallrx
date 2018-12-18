@@ -59,5 +59,5 @@ cat /dev/urandom | ./rx 145300000 145325000 f | csdr through > /dev/null
 ## Contributors
 
 - András Retzler, HA7ILM
-- Zsolt Krüpl, HG2ECZ, @hg2ecz
-- Ádám Kiss, HA8KDA, @kissadamfkut
+- Zsolt Krüpl, HG2ECZ, [@hg2ecz](https://github.com/hg2ecz)
+- Ádám Kiss, HA8KDA, [@kissadamfkut](https://github.com/kissadamfkut)
