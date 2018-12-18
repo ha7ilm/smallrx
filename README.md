@@ -50,7 +50,7 @@ cat /dev/urandom | ./rx 145300000 145325000 f | csdr through > /dev/null
 
 :blue_book: **Notes:**
 
-* Some examples here need [csdr](https://github.com/simonyiszk/csdr) to be installed.
+* Some examples here need [csdr](https://github.com/simonyiszk/csdr) to be installed (also check that out if you need a fully fledged command-line DSP tool for SDR).
 * HG2ECZ has translated this to Rust, which is available here: https://github.com/hg2ecz/smallrx
 * For an even shorter FM demodulator (from where the idea of `smallrx` came from), see: https://github.com/simonyiszk/minidemod
 
