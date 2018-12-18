@@ -5,7 +5,7 @@ This is an amateur radio receiver in no more than 100 lines of code.
 
 It can receive AM/NFM/SSB transmissions with an RTL-SDR.
 
-:tv: **Presentation**
+:tv: **Presentation:**
 
 For more insight, you can [watch my talk](https://www.youtube.com/watch?v=-QERqK1XAy0) on this project I gave at SDR-2018.
 
